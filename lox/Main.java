@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import lox.Scanner;
+
 public class Main {
    static boolean hadError = false;
 
@@ -36,7 +38,9 @@ public class Main {
       for (;;) {
          System.out.print("> ");
          String line = reader.readLine();
-         if (line == null) break;
+         if (line == null) {
+            break;
+         }
          run(line);
          hadError = false;
       }
