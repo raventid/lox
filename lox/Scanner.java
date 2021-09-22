@@ -13,9 +13,11 @@ class Scanner {
     private int start = 0;
     private int current = 0;
     private int line = 1;
+    private ErrorReporter errorReporter;
 
-    Scanner(String source) {
+    Scanner(String source, ErrorReporter errorReporter) {
         this.source = source;
+        this.errorReporter = errorReporter;
     }
 
     List<Token> scanTokens() {
@@ -43,7 +45,50 @@ class Scanner {
         case '+': addToken(PLUS); break;
         case ';': addToken(SEMICOLON); break;
         case '*': addToken(STAR); break;
+        case ' ':
+        case '\r':
+        case '\t':
+            break;
+        case '\n':
+            advance();
+            break;
+        case '!':
+            addToken(match('=') ? BANG_EQUAL : BANG);
+            break;
+        case '=':
+            addToken(match('=') ? EQUAL_EQUAL : EQUAL);
+            break;
+        case '<':
+            addToken(match('=') ? LESS_EQUAL : LESS);
+            break;
+        case '>':
+            addToken(match('=') ? GREATER_EQUAL : GREATER);
+            break;
+        case '/':
+            if (match('/')) {
+                // a comment goes till the end of the line
+                while(peek() != '\n' && !isAtEnd()) { advance(); }
+            } else {
+                addToken(SLASH);
+            }
+            break;
+        default:
+            errorReporter.error(line, "Unexpected character.");
+            break;
         }
+    }
+
+    private char peek() {
+        if (isAtEnd()) { return '\0'; }
+        return source.charAt(current);
+    }
+
+    private boolean match(char expected) {
+        if (isAtEnd()) { return false; }
+        if (source.charAt(current) != expected) { return false; }
+
+        advance();
+        return true;
     }
 
     private boolean isAtEnd() {

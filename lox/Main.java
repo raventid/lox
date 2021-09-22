@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import lox.Scanner;
+import lox.ErrorReporter;
 
 public class Main {
    static boolean hadError = false;
@@ -47,7 +48,7 @@ public class Main {
    }
 
    private static void run(String source) {
-      Scanner scanner = new Scanner(source);
+      Scanner scanner = new Scanner(source, new ErrorReporter());
       List<Token> tokens = scanner.scanTokens();
       // For now, just print the tokens.
       for (Token token : tokens) {
@@ -55,11 +56,4 @@ public class Main {
       }
    }
 
-   static void error(int line, String message) {
-      report(line, "", message);
    }
-
-   private static void report(int line, String where, String message) {
-      System.out.println("[line " + line + "] Error" + where + ": " + message);
-   }
-}
