@@ -72,8 +72,15 @@ class Scanner {
                 addToken(SLASH);
             }
             break;
+        case '"':
+            string();
+            break;
         default:
-            errorReporter.error(line, "Unexpected character.");
+            if (isDigit(c)) {
+                number();
+            } else {
+                errorReporter.error(line, "Unexpected character.");
+            }
             break;
         }
     }
@@ -83,16 +90,66 @@ class Scanner {
         return source.charAt(current);
     }
 
+    private char peekNext() {
+        if (current + 1 >= source.length()) {
+            return '\0';
+        }
+
+        return source.charAt(current + 1);
+    }
+
     private boolean match(char expected) {
         if (isAtEnd()) { return false; }
         if (source.charAt(current) != expected) { return false; }
 
-        advance();
+        line++;
         return true;
+    }
+
+    private void number() {
+        while(isDigit(peek())) {
+            advance();
+        }
+
+        // fractional part
+        if (peek() == '.' && isDigit(peekNext())) {
+            // consume the "."
+            advance();
+
+            while(isDigit(peek())) {
+                advance();
+            }
+        }
+
+        addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
+    }
+
+    private void string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') {
+                line++;
+            }
+            advance();
+        }
+
+        if (isAtEnd()) {
+            errorReporter.error(line, "Unterminated string");
+            return;
+        }
+
+        advance();
+
+        // Trim the surrounding quotes
+        String value = source.substring(start + 1, current - 1);
+        addToken(STRING, value);
     }
 
     private boolean isAtEnd() {
         return current >= source.length();
+    }
+
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 
     private char advance() {
