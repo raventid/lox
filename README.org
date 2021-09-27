@@ -1,1 +1,5 @@
 #+TITLE: Readme
+
+Interpreter implemented after reading https://craftinginterpreters.com/.
+
+Code is mostly copied (with some modification and notes) from the book, for original copyright please visit the website above.
