@@ -1,5 +1,12 @@
 #+TITLE: Readme
-
+** Description
 Interpreter implemented after reading https://craftinginterpreters.com/.
 
+** Some notes
+| Terminology                | Lexical grammar | Syntactic grammar |
+| The “alphabet” is...       | Characters      | Tokens            |
+| A “string” is...           | Lexeme or token | Expression        |
+| It's implemented by the... | Scanner         | Parser            |
+
+** Copyright
 Code is mostly copied (with some modification and notes) from the book, for original copyright please visit the website above.
