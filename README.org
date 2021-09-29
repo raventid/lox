@@ -3,10 +3,15 @@
 Interpreter implemented after reading https://craftinginterpreters.com/.
 
 ** Some notes
+|----------------------------+-----------------+-------------------|
 | Terminology                | Lexical grammar | Syntactic grammar |
+|----------------------------+-----------------+-------------------|
 | The “alphabet” is...       | Characters      | Tokens            |
 | A “string” is...           | Lexeme or token | Expression        |
 | It's implemented by the... | Scanner         | Parser            |
+|----------------------------+-----------------+-------------------|
+
+John Backus and company needed a notation for specifying ALGOL 58 and came up with Backus-Naur form. Since then, nearly everyone uses some flavor of BNF
 
 ** Copyright
 Code is mostly copied (with some modification and notes) from the book, for original copyright please visit the website above.
