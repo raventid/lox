@@ -1,4 +1,4 @@
-package lox;
+package loxi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import lox.Scanner;
-import lox.ErrorReporter;
+import loxi.Scanner;
+import loxi.ErrorReporter;
 
 public class Main {
    static boolean hadError = false;
