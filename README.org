@@ -1,6 +1,6 @@
 #+TITLE: Readme
 ** Description
-Interpreter implemented after reading https://craftinginterpreters.com/.
+Interpreters implemented after reading https://craftinginterpreters.com/.
 
 ** Some commands
 To generate Expr.java file run:
@@ -8,7 +8,6 @@ To generate Expr.java file run:
 lox 1 % make genexp
 javac tool/GenerateAst.java && java tool/GenerateAst loxi
 #+end_src
-
 
 ** Some notes
 |----------------------------+-----------------+-------------------|
