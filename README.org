@@ -2,6 +2,14 @@
 ** Description
 Interpreter implemented after reading https://craftinginterpreters.com/.
 
+** Some commands
+To generate Expr.java file run:
+#+begin_src bash
+lox 1 % make genexp
+javac tool/GenerateAst.java && java tool/GenerateAst loxi
+#+end_src
+
+
 ** Some notes
 |----------------------------+-----------------+-------------------|
 | Terminology                | Lexical grammar | Syntactic grammar |
