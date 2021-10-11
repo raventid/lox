@@ -20,5 +20,38 @@ javac tool/GenerateAst.java && java tool/GenerateAst loxi
 
 John Backus and company needed a notation for specifying ALGOL 58 and came up with Backus-Naur form. Since then, nearly everyone uses some flavor of BNF
 
+
+*** Expression problem
+OOP:
+Easy to add new class. Difficult to add new method.
+
+|--------+---------+---------|
+| Class1 | method1 | method2 |
+|--------+---------+---------|
+| Class2 | method1 | method2 |
+|--------+---------+---------|
+| Class3 | method1 | method2 |
+|--------+---------+---------|
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|----------+---------+---------+---+---|
+| NewClass | method1 | method2 |   |   |
+|----------+---------+---------+---+---|
+
+FP:
+Easy to add new method/function. Difficult to add new class/type.
+
+|-----------+-----------+---+-----------|
+| function1 | function2 | < | function3 |
+|-----------+-----------+---+-----------|
+| Type1     | Type1     | < | Type1     |
+|-----------+-----------+---+-----------|
+| Type2     | Type2     | < | Type2     |
+|-----------+-----------+---+-----------|
+
+#+begin_quote
+A bunch of smart language nerds noticed that neither style made it easy to add both rows and columns to the table. They called this difficulty the “expression problem” because—like we are now—they first ran into it when they were trying to figure out the best way to model expression syntax tree nodes in a compiler.
+#+end_quote
+
 ** Copyright
 Code is mostly copied (with some modification and notes) from the book, for original copyright please visit the website above.
