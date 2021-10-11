@@ -31,15 +31,26 @@ public class GenerateAst {
         writer.println();
         writer.println("abstract class " + baseName + " {");
 
+        defineVisitor(writer, baseName, types);
+
         // The AST classes.
         for (String type : types) {
-            String className = type.split(":")[0].trim();
-            String fields = type.split(":")[1].trim();
+            String className = extractType(type);
+            String fields = extractFieldList(type);
             defineType(writer, baseName, className, fields);
         }
 
         writer.println("}");
         writer.close();
+    }
+
+    private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
+      writer.println("  interface Visitor<R> {");
+      for (String type : types) {
+        String typeName = extractType(type);
+        writer.println("    R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
+      }
+      writer.println("  }");
     }
 
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
@@ -63,5 +74,13 @@ public class GenerateAst {
         }
 
         writer.println("  }");
+    }
+
+    private static String extractType(String typeDescription) {
+        return typeDescription.split(":")[0].trim();
+    }
+
+    private static String extractFieldList(String typeDescription) {
+        return typeDescription.split(":")[1].trim();
     }
 }
