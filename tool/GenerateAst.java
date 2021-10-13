@@ -54,6 +54,9 @@ public class GenerateAst {
     }
 
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
+        // Separate Expr classes with empty line.
+        writer.println("");
+
         writer.println("  static class " + className + " extends " + baseName + " {");
 
         // Constructor.
