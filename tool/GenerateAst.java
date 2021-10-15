@@ -74,6 +74,13 @@ public class GenerateAst {
         }
         writer.println("    }");
 
+        // Visitor pattern.
+        writer.println();
+        writer.println("    @Override");
+        writer.println("    <R> R accept(Visitor<R> visitor) {");
+        writer.println("      return visitor.visit" + className + baseName + "(this);");
+        writer.println("    }");
+
         // Fields.
         writer.println();
         for (String field : fields) {
