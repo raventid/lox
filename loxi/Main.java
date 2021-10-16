@@ -10,6 +10,7 @@ import java.util.List;
 
 import loxi.Scanner;
 import loxi.ErrorReporter;
+import loxi.AstPrinter;
 
 public class Main {
    static boolean hadError = false;
