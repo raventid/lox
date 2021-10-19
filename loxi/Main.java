@@ -11,6 +11,7 @@ import java.util.List;
 import loxi.Scanner;
 import loxi.ErrorReporter;
 import loxi.AstPrinter;
+import loxi.Parser;
 
 public class Main {
    static boolean hadError = false;
