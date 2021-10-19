@@ -1,5 +1,7 @@
 #+TITLE: Readme
 
+This is my notes for loxi interpeter. Simple interpreter written in Java. (Please, see repo readme for more details).
+
 |------------+------------------------------------------------------------------------|
 | Name       | Expr                                                                   |
 |------------+------------------------------------------------------------------------|
@@ -17,3 +19,8 @@
 |------------+------------------------------------------------------------------------|
 | primary    | NUMBER or STRING or "true" or "false" or "nil" or "(" expression ")" ; |
 |------------+------------------------------------------------------------------------|
+
+When we are talking about parser there are two domains. Grammar and Precedence. Their understand of top/down is reversed.
+#+ATTR_HTML: width="400px"
+#+ATTR_ORG: :width 400
+[[./misc/grammar_and_precedence.png]]
