@@ -2,6 +2,7 @@
 
 This is my notes for loxi interpeter. Simple interpreter written in Java. (Please, see repo readme for more details).
 
+** Grammar rules
 |------------+------------------------------------------------------------------------|
 | Name       | Expr                                                                   |
 |------------+------------------------------------------------------------------------|
@@ -20,6 +21,7 @@ This is my notes for loxi interpeter. Simple interpreter written in Java. (Pleas
 | primary    | NUMBER or STRING or "true" or "false" or "nil" or "(" expression ")" ; |
 |------------+------------------------------------------------------------------------|
 
+** General notes about interpreters and so on
 When we are talking about parser there are two domains. Grammar and Precedence. Their understand of top/down is reversed.
 #+ATTR_HTML: width="400px"
 #+ATTR_ORG: :width 400
