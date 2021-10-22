@@ -46,4 +46,18 @@ class Parser {
 
         return expr;
     }
+
+    // // // // // // // // // // //
+    // Different helper functions //
+    // // // // // // // // // // //
+    private boolean match(TokenType... types) {
+        for (TokenType type : types) {
+           if (check(type)) {
+               advance();
+               return true;
+           }
+        }
+
+        return false;
+    }
 }
