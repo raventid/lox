@@ -47,6 +47,23 @@ class Parser {
         return expr;
     }
 
+    private Expr comparison() {
+      Expr expr = term();
+
+      while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+          Token operator = previous();
+          Expr right = term();
+          expr = new Expr.Binary(expr, operator, right);
+      }
+
+      return expr;
+    }
+
+    // THIS IS PLACEHOLDER FOR TESTING PURPOSE
+    private Expr term() {
+        return new Expr.Literal(NUMBER);
+    }
+
     // // // // // // // // // // //
     // Different helper functions //
     // // // // // // // // // // //
