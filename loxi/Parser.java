@@ -59,8 +59,20 @@ class Parser {
       return expr;
     }
 
-    // THIS IS PLACEHOLDER FOR TESTING PURPOSE
     private Expr term() {
+        Expr expr = factor();
+
+        while (match(MINUS, PLUS)) {
+            Token operator = previous();
+            Expr right = factor();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
+    }
+
+    // THIS IS PLACEHOLDER FOR TESTING PURPOSE
+    private Expr factor() {
         return new Expr.Literal(NUMBER);
     }
 
