@@ -83,8 +83,19 @@ class Parser {
         return expr;
     }
 
-    // THIS IS PLACEHOLDER FOR TESTING PURPOSE
     private Expr unary() {
+        if (match(BANG, MINUS)) {
+            Token operator = previous();
+            Expr right = unary();
+            Expr expr = new Expr.Unary(operator, right);
+            return expr;
+        }
+
+        return primary();
+    }
+
+    // THIS IS PLACEHOLDER FOR TESTING PURPOSE
+    private Expr primary() {
         return new Expr.Literal(NUMBER);
     }
 
