@@ -27,9 +27,15 @@ class Parser {
     private final List<Token> tokens;
     private int current = 0;
 
+    private static class ParseError extends RuntimeException {}
+
     Parser(List<Token> tokens) {
         this.tokens = tokens;
     }
+
+    // // // // // // // // // //
+    // Grammar rules functions //
+    // // // // // // // // // //
 
     private Expr expression() {
        return equality();
@@ -111,8 +117,9 @@ class Parser {
     }
 
     // // // // // // // // // // //
-    // Different helper functions //
+    // Parser machinery functions //
     // // // // // // // // // // //
+
     private boolean match(TokenType... types) {
         for (TokenType type : types) {
            if (check(type)) {
@@ -124,14 +131,24 @@ class Parser {
         return false;
     }
 
-    private boolean check(TokenType type) {
-        if (isAtEnd()) { return false; }
-        return peek().type == type;
+    private Token consume(TokenType tokenType, String message) {
+        if (check(tokenType)) { return advance(); }
+        throw error(peek(), message);
     }
 
     private Token advance() {
         if (!isAtEnd()) { current++; }
         return previous();
+    }
+
+    private ParseError error(Token token, String message) {
+        ErrorReporter.error(token, message);
+        return new ParseError();
+    }
+
+    private boolean check(TokenType type) {
+        if (isAtEnd()) { return false; }
+        return peek().type == type;
     }
 
     private boolean isAtEnd() {
