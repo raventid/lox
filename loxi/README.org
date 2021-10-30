@@ -21,6 +21,11 @@ This is my notes for loxi interpeter. Simple interpreter written in Java. (Pleas
 | primary    | NUMBER or STRING or "true" or "false" or "nil" or "(" expression ")" ; |
 |------------+------------------------------------------------------------------------|
 
+
+** Parser
+Panicking - state the parser enters after seeing malformed input
+Synchronizing parser - run recovery after error happens
+
 ** General notes about interpreters and so on
 When we are talking about parser there are two domains. Grammar and Precedence. Their understand of top/down is reversed.
 #+ATTR_HTML: width="400px"
