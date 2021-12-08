@@ -15,6 +15,7 @@ import loxi.Parser;
 
 public class Main {
    static boolean hadError = false;
+   static boolean showLexerOutput = false;
 
    public static void main(String[] args) throws IOException {
       System.out.println("");
@@ -45,7 +46,19 @@ public class Main {
          if (line == null) {
             break;
          }
-         run(line);
+         // If we receive command, than we should handle command
+         if (commandCode(line) == 1) {
+            if (showLexerOutput) {
+               showLexerOutput = false;
+               System.out.println("Lexer output has been disabled");
+            } else {
+               showLexerOutput = true;
+               System.out.println("Lexer output has been enabled");
+            }
+         // Else we should handle loxi code
+         } else {
+            run(line);
+         }
          hadError = false;
       }
    }
@@ -53,10 +66,26 @@ public class Main {
    private static void run(String source) {
       Scanner scanner = new Scanner(source, new ErrorReporter());
       List<Token> tokens = scanner.scanTokens();
-      // For now, just print the tokens.
-      for (Token token : tokens) {
-         System.out.println(token);
+      if (showLexerOutput) {
+         for (Token token : tokens) {
+            System.out.println(token);
+         }
+
       }
+
+      Parser parser = new Parser(tokens);
+      Expr expression = parser.parse();
+
+      if (hadError) { return; }
+
+      System.out.println(new AstPrinter().print(expression));
    }
 
+   // No command: -1
+   // Print lexer output: 1
+   private static int commandCode(String line) {
+      if (line.length() < 2) { return -1; }
+      if (line.substring(0, 2).equals(":a")) { return 1; }
+      return -1;
    }
+}
