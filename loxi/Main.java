@@ -12,6 +12,7 @@ import loxi.Scanner;
 import loxi.ErrorReporter;
 import loxi.AstPrinter;
 import loxi.Parser;
+import loxi.Interpreter;
 
 public class Main {
    static boolean hadError = false;
