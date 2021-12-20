@@ -48,6 +48,14 @@ class Interpreter implements Expr.Visitor<Object> {
                 }
 
                 break;
+            case GREATER:
+                return (double)left > (double)right;
+            case GREATER_EQUAL:
+                return (double)left >= (double)right;
+            case LESS:
+                return (double)left < (double)right;
+            case LESS_EQUAL:
+                return (double)left <= (double)right;
         }
 
         // Unreachable
