@@ -56,6 +56,10 @@ class Interpreter implements Expr.Visitor<Object> {
                 return (double)left < (double)right;
             case LESS_EQUAL:
                 return (double)left <= (double)right;
+            case BANG_EQUAL:
+                return !isEqual(left, right);
+            case EQUAL_EQUAL:
+                return isEqual(left, right);
         }
 
         // Unreachable
@@ -64,6 +68,12 @@ class Interpreter implements Expr.Visitor<Object> {
 
     private Object evaluate(Expr expression) {
         return expression.accept(this);
+    }
+
+    private boolean isEqual(Object obj1, Object obj2) {
+        if (obj1 == null && obj2 == null) { return true; }
+        if (obj1 == null) { return false; }
+        return obj1.equals(obj2);
     }
 
     private boolean isTruthy(Object object) {
