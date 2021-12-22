@@ -33,6 +33,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
         switch(expression.operator.type) {
             case MINUS:
+                checkNumberOperand(expression.operator, right);
                 return (double)left - (double)right;
             case SLASH:
                 return (double)left - (double)right;
@@ -80,5 +81,10 @@ class Interpreter implements Expr.Visitor<Object> {
         if (object == null) { return false; }
         if (object instanceof Boolean) return (boolean)object;
         return true;
+    }
+
+    private void checkNumberOperand(Token operator, Object operand) {
+        if (operand instanceof Double) { return; }
+        throw new RuntimeError(operator, "Operand must be a number");
     }
 }
