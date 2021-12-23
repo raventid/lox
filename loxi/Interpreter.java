@@ -36,8 +36,10 @@ class Interpreter implements Expr.Visitor<Object> {
                 checkNumberOperand(expression.operator, right);
                 return (double)left - (double)right;
             case SLASH:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left - (double)right;
             case STAR:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left * (double)right;
             case PLUS:
                 if (left instanceof Double && right instanceof Double) {
@@ -48,14 +50,18 @@ class Interpreter implements Expr.Visitor<Object> {
                     return (String)left + (String)right;
                 }
 
-                break;
+                throw new RuntimeError(expression.operator, "Operands must be two numbers or two strings.");
             case GREATER:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left > (double)right;
             case GREATER_EQUAL:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left >= (double)right;
             case LESS:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left < (double)right;
             case LESS_EQUAL:
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left <= (double)right;
             case BANG_EQUAL:
                 return !isEqual(left, right);
@@ -86,5 +92,13 @@ class Interpreter implements Expr.Visitor<Object> {
     private void checkNumberOperand(Token operator, Object operand) {
         if (operand instanceof Double) { return; }
         throw new RuntimeError(operator, "Operand must be a number");
+    }
+
+    private void checkNumberOperands(Token operator, Object operand1, Object operand2) {
+        if (operand1 instanceof Double && operand2 instanceof Double) {
+            return;
+        }
+
+        throw new RuntimeError(operator, "Operands must be numbers");
     }
 }
