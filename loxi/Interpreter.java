@@ -17,6 +17,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
         switch(expression.operator.type) {
             case MINUS:
+                checkNumberOperand(expression.operator, right);
                 return -(double)right;
             case BANG:
                 return !isTruthy(right);
@@ -33,7 +34,7 @@ class Interpreter implements Expr.Visitor<Object> {
 
         switch(expression.operator.type) {
             case MINUS:
-                checkNumberOperand(expression.operator, right);
+                checkNumberOperands(expression.operator, left, right);
                 return (double)left - (double)right;
             case SLASH:
                 checkNumberOperands(expression.operator, left, right);
