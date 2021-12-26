@@ -17,6 +17,7 @@ import loxi.Interpreter;
 public class Main {
    static boolean hadError = false;
    static boolean showLexerOutput = false;
+   static boolean hadRuntimeError = false;
 
    public static void main(String[] args) throws IOException {
       System.out.println("");
@@ -36,6 +37,7 @@ public class Main {
 
       // Indicate an error in the exit code.
       if (hadError) { System.exit(65); }
+      if (hadRuntimeError) System.exit(70);
    }
 
    private static void runPrompt() throws IOException {
@@ -88,5 +90,10 @@ public class Main {
       if (line.length() < 2) { return -1; }
       if (line.substring(0, 2).equals(":a")) { return 1; }
       return -1;
+   }
+
+   static void runtimeError(RuntimeError error) {
+      System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+      hadRuntimeError = true;
    }
 }
