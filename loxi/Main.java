@@ -15,8 +15,10 @@ import loxi.Parser;
 import loxi.Interpreter;
 
 public class Main {
+   private static final Interpreter interpreter = new Interpreter();
    static boolean hadError = false;
    static boolean showLexerOutput = false;
+   static boolean showParserOutput = false;
    static boolean hadRuntimeError = false;
 
    public static void main(String[] args) throws IOException {
@@ -58,6 +60,14 @@ public class Main {
                showLexerOutput = true;
                System.out.println("Lexer output has been enabled");
             }
+         } else if(commandCode(line) == 2) {
+            if (showParserOutput) {
+               showParserOutput = false;
+               System.out.println("Parser output has been disabled");
+            } else {
+               showParserOutput = true;
+               System.out.println("Parser output has been enabled");
+            }
          // Else we should handle loxi code
          } else {
             run(line);
@@ -81,14 +91,19 @@ public class Main {
 
       if (hadError) { return; }
 
-      System.out.println(new AstPrinter().print(expression));
+      if (showParserOutput) {
+         System.out.println(new AstPrinter().print(expression));
+      }
+
+      interpreter.interpret(expression);
    }
 
    // No command: -1
    // Print lexer output: 1
    private static int commandCode(String line) {
       if (line.length() < 2) { return -1; }
-      if (line.substring(0, 2).equals(":a")) { return 1; }
+      if (line.substring(0, 2).equals(":l")) { return 1; }
+      if (line.substring(0, 2).equals(":p")) { return 2; }
       return -1;
    }
 
