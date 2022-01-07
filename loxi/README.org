@@ -3,6 +3,7 @@
 This is my notes for loxi interpeter. Simple interpreter written in Java. (Please, see repo readme for more details).
 
 ** Grammar rules
+Expressions:
 |------------+------------------------------------------------------------------------|
 | Name       | Expr                                                                   |
 |------------+------------------------------------------------------------------------|
@@ -21,6 +22,16 @@ This is my notes for loxi interpeter. Simple interpreter written in Java. (Pleas
 | primary    | NUMBER or STRING or "true" or "false" or "nil" or "(" expression ")" ; |
 |------------+------------------------------------------------------------------------|
 
+Statements:
+|-----------+-----------------------------|
+| program   | statement* EOF ; → exprStmt |
+|-----------+-----------------------------|
+| statement | exprStmt or printStmt ;     |
+|-----------+-----------------------------|
+| exprStmt  | expression ";" ;            |
+|-----------+-----------------------------|
+| printStmt | "print" expression ";" ;    |
+|-----------+-----------------------------|
 
 ** Parser
 Panicking - state the parser enters after seeing malformed input
