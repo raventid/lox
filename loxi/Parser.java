@@ -65,9 +65,9 @@ class Parser {
     }
 
 
-    // // // // // // // // // //
-    // Grammar rules functions //
-    // // // // // // // // // //
+    // // // // // // // // // // // // // // // //
+    // Grammar rules functions: Expression level //
+    // // // // // // // // // // // // // // // //
 
     private Expr expression() {
        return equality();
