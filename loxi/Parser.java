@@ -5,6 +5,8 @@ import java.util.List;
 import static loxi.TokenType.*;
 
 // Grammar rules for the Parser. You can also find them in a ./Readme.org
+//
+//                                   Expressions
 // |------------+------------------------------------------------------------------------|
 // | Name       | Expr                                                                   |
 // |------------+------------------------------------------------------------------------|
@@ -26,6 +28,7 @@ import static loxi.TokenType.*;
 //
 //
 //
+//               Statements
 // |-----------+-----------------------------|
 // | program   | statement* EOF ; → exprStmt |
 // |-----------+-----------------------------|
