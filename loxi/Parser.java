@@ -30,7 +30,7 @@ import static loxi.TokenType.*;
 //
 //               Statements
 // |-----------+-----------------------------|
-// | program   | statement* EOF ; → exprStmt |
+// | program   | statement* EOF ; exprStmt   |
 // |-----------+-----------------------------|
 // | statement | exprStmt or printStmt ;     |
 // |-----------+-----------------------------|
