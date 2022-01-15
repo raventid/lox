@@ -1,6 +1,6 @@
 package loxi;
 
-class Interpreter implements Expr.Visitor<Object> {
+class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     void interpret(Expr expression) {
         try {
             Object value = evaluate(expression);
@@ -20,6 +20,19 @@ class Interpreter implements Expr.Visitor<Object> {
         return text;
       }
       return object.toString();
+    }
+
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt) {
+        evaluate(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitPrintStmt(Stmt.Print stmt) {
+        Object value = evaluate(stmt.print);
+        System.out.println(stringify(value));
+        return null;
     }
 
     @Override
