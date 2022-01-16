@@ -22,8 +22,8 @@ abstract class Stmt {
   }
 
   static class Print extends Stmt {
-    Print(Expr print) {
-      this.print = print;
+    Print(Expr expression) {
+      this.expression = expression;
     }
 
     @Override
@@ -31,7 +31,7 @@ abstract class Stmt {
       return visitor.visitPrintStmt(this);
     }
 
-    final Expr print;
+    final Expr expression;
   }
 
   abstract <R> R accept(Visitor<R> visitor);
