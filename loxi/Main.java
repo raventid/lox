@@ -87,15 +87,17 @@ public class Main {
       }
 
       Parser parser = new Parser(tokens);
-      Expr expression = parser.parse();
+      List<Stmt> statements = parser.parse();
 
       if (hadError) { return; }
 
       if (showParserOutput) {
-         System.out.println(new AstPrinter().print(expression));
+         System.out.println("Implement visitor for statements");
+         System.out.println("AstPrinter does not support statements");
+         // System.out.println(new AstPrinter().print(statements));
       }
 
-      interpreter.interpret(expression);
+      interpreter.interpret(statements);
    }
 
    // No command: -1
