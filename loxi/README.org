@@ -23,15 +23,17 @@ Expressions:
 |------------+------------------------------------------------------------------------|
 
 Statements:
-|-----------+-----------------------------|
-| program   | statement* EOF ; exprStmt   |
-|-----------+-----------------------------|
-| statement | exprStmt or printStmt ;     |
-|-----------+-----------------------------|
-| exprStmt  | expression ";" ;            |
-|-----------+-----------------------------|
-| printStmt | "print" expression ";" ;    |
-|-----------+-----------------------------|
+|-------------+---------------------------|
+| program     | statement* EOF ; exprStmt |
+|-------------+---------------------------|
+| declaration | varDecl or statement;     |
+|-------------+---------------------------|
+| statement   | exprStmt or printStmt ;   |
+|-------------+---------------------------|
+| exprStmt    | expression ";" ;          |
+|-------------+---------------------------|
+| printStmt   | "print" expression ";" ;  |
+|-------------+---------------------------|
 
 ** Parser
 Panicking - state the parser enters after seeing malformed input
