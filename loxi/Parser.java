@@ -30,15 +30,17 @@ import static loxi.TokenType.*;
 //
 //
 //               Statements
-// |-----------+-----------------------------|
-// | program   | statement* EOF ; exprStmt   |
-// |-----------+-----------------------------|
-// | statement | exprStmt or printStmt ;     |
-// |-----------+-----------------------------|
-// | exprStmt  | expression ";" ;            |
-// |-----------+-----------------------------|
-// | printStmt | "print" expression ";" ;    |
-// |-----------+-----------------------------|
+// |-------------+---------------------------|
+// | program     | statement* EOF ; exprStmt |
+// |-------------+---------------------------|
+// | declaration | varDecl or statement;     |
+// |-------------+---------------------------|
+// | statement   | exprStmt or printStmt ;   |
+// |-------------+---------------------------|
+// | exprStmt    | expression ";" ;          |
+// |-------------+---------------------------|
+// | printStmt   | "print" expression ";" ;  |
+// |-------------+---------------------------|
 
 
 class Parser {
