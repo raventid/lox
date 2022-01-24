@@ -13,6 +13,7 @@ import loxi.ErrorReporter;
 import loxi.AstPrinter;
 import loxi.Parser;
 import loxi.Interpreter;
+import loxi.Environment;
 
 public class Main {
    private static final Interpreter interpreter = new Interpreter();
