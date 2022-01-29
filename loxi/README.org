@@ -48,3 +48,10 @@ When we are talking about parser there are two domains. Grammar and Precedence. 
 #+ATTR_HTML: width="400px"
 #+ATTR_ORG: :width 400
 [[./misc/grammar_and_precedence.png]]
+
+
+l-value vs r-value
+#+begin_src javascript
+var a = 10;
+a = 20; // a is called l-value, 20 is called r-value (l-value is an assignment place, r-value is expr to eval)
+#+end_src
