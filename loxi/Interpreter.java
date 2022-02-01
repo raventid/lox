@@ -35,7 +35,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     public Void visitVarStmt(Stmt.Var stmt) {
         Object value = null;
 
-        // In case `var a;` we define it as `a = null`
+        // In case `var a;` we leave it as `a = null`
         if (stmt.initializer != null) {
             value = evaluate(stmt.initializer);
         }
@@ -60,6 +60,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitVariableExpr(Expr.Variable expression) {
         return environment.get(expression.name);
+    }
+
+    @Override
+    public Object visitAssignExpr(Expr.Assign expression) {
+        Object value = evaluate(expression.value);
+        environment.assign(expression.name, value);
+        return value;
     }
 
     @Override
