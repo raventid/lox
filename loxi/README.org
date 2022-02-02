@@ -26,11 +26,13 @@ Expressions:
 
 Statements:
 |-------------+------------------------------------------|
-| program     | statement* EOF ; exprStmt                |
+| program     | statement* EOF ;                         |
 |-------------+------------------------------------------|
-| declaration | varDecl or statement;                    |
+| block       | "{" declaration "}" ;                    |
 |-------------+------------------------------------------|
-| statement   | exprStmt or printStmt ;                  |
+| declaration | varDecl or statement ;                   |
+|-------------+------------------------------------------|
+| statement   | exprStmt or printStmt or block ;         |
 |-------------+------------------------------------------|
 | exprStmt    | expression ";" ;                         |
 |-------------+------------------------------------------|
