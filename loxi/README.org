@@ -58,4 +58,4 @@ var a = 10;
 a = 20; // a is called l-value, 20 is called r-value (l-value is an assignment place, r-value is expr to eval)
 #+end_src
 
-Why use var declaration and not implicit declaration like a = 10? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes it is easier to work with explicit decls.
+Why use var declaration and not implicit declaration like `a = 10`? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes it is easier to work with explicit decls.
