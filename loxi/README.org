@@ -60,9 +60,13 @@ a = 20; // a is called l-value, 20 is called r-value (l-value is an assignment p
 
 TODO: How exactly does lack of explicit declaration complicates scope analyses. (i.e. in Ruby we use implicit decls and it works)
 
-Why use `var` declaration and not an implicit declaration like ~a = 10~? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes it is easier to work with explicit decls.
+Why use ~var~ declaration and not an implicit declaration like ~a = 10~? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes it is easier to work with explicit decls.
 
 
 *** Parser
 Panicking - state the parser enters after seeing malformed input
 Synchronizing parser - run recovery after error happens
+
+* Loxi
+** REPL
+I use makefiles to control build and execute proceedure, please use ~make repl~ to run interpreter.
