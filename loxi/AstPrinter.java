@@ -1,6 +1,6 @@
 package loxi;
 
-class AstPrinter implements Expr.Visitor<String> {
+class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     String print(Expr expr) {
         return expr.accept(this);
     }
@@ -35,6 +35,16 @@ class AstPrinter implements Expr.Visitor<String> {
     public String visitAssignExpr(Expr.Assign expr) {
         return "UNSUPPORTED_TOKEN";
     }
+
+    @Override
+    public String visitBlockStmt(Stmt.Block stmt) { return "UNSUPPORTED_TOKEN"; }
+    @Override
+    public String visitExpressionStmt(Stmt.Expression stmt) {return "UNSUPPORTED_TOKEN";}
+    @Override
+    public String visitPrintStmt(Stmt.Print stmt) {return "UNSUPPORTED_TOKEN";}
+    @Override
+    public String visitVarStmt(Stmt.Var stmt){return "UNSUPPORTED_TOKEN";}
+
 
     private String parenthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
