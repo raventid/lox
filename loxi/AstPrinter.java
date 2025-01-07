@@ -5,6 +5,10 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return expr.accept(this);
     }
 
+    String print_stmt(Stmt stmt) {
+        return stmt.accept(this);
+    }
+
     @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return parenthesize(expr.operator.lexeme, expr.right);
