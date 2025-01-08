@@ -95,7 +95,7 @@ public class Main {
       if (showParserOutput) {
          System.out.println("TODO: IMPLEMENT PROPER INSPECTION OF PARSER STATEMENTS");
          for(Stmt statement : statements) {
-            System.out.println(new AstPrinter().print_stmt(statement));
+            System.out.println(new AstPrinter().print_statement(statement));
          }
       }
 

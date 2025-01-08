@@ -5,8 +5,8 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return expr.accept(this);
     }
 
-    String print_stmt(Stmt stmt) {
-        return stmt.accept(this);
+    String print_statement(Stmt statement) {
+        return statement.accept(this);
     }
 
     @Override
