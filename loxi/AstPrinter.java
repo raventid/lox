@@ -9,6 +9,7 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return statement.accept(this);
     }
 
+    // Visitor implementation for expressions
     @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return parenthesize(expr.operator.lexeme, expr.right);
@@ -40,15 +41,26 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
         return "UNSUPPORTED_TOKEN";
     }
 
+    // Visitor implementation for statements
     @Override
-    public String visitBlockStmt(Stmt.Block stmt) { return "UNSUPPORTED_TOKEN"; }
-    @Override
-    public String visitExpressionStmt(Stmt.Expression stmt) {return "UNSUPPORTED_TOKEN";}
-    @Override
-    public String visitPrintStmt(Stmt.Print stmt) {return "UNSUPPORTED_TOKEN";}
-    @Override
-    public String visitVarStmt(Stmt.Var stmt){return "UNSUPPORTED_TOKEN";}
+    public String visitBlockStmt(Stmt.Block stmt) {
+        return "UNSUPPORTED_Block_Statement";
+    }
 
+    @Override
+    public String visitExpressionStmt(Stmt.Expression stmt) {
+        return "UNSUPPORTED_TOKEN_Expression_Statement";
+    }
+
+    @Override
+    public String visitPrintStmt(Stmt.Print stmt) {
+        return "UNSUPPORTED_TOKEN_Print_Statement";
+    }
+
+    @Override
+    public String visitVarStmt(Stmt.Var stmt) {
+        return "UNSUPPORTED_TOKEN_Var_Statement";
+    }
 
     private String parenthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
