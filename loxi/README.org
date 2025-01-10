@@ -67,6 +67,6 @@ Why use ~var~ declaration and not an implicit declaration like ~a = 10~? It comp
 Panicking - state the parser enters after seeing malformed input
 Synchronizing parser - run recovery after error happens
 
-* Loxi
-** REPL
-I use makefiles to control build and execute proceedure, please use ~make repl~ to run interpreter.
+** Loxi
+*** REPL
+I use makefiles to control ~build and execute~ procedure, please use ~make repl~ to run interpreter.
