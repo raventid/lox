@@ -91,6 +91,9 @@ Some languages like C make a distinction between defining a function and declari
 Argument - actual value passed to the function. Function call contains an argument list. (also ~actual parameter~)
 Parameter - variable that holds the value of the argument inside the body of the function. Function declaration has a parameter list. (~formal parameters or formals~)
 
+*** Closures
+Closures - enclose over variables used in a body. If we return a closure from another function body we should provide a mechanism to capture outside variable and not let it go out of scope.
+
 
 ** Compiler vs interpreter
 *** Compilation
