@@ -94,6 +94,14 @@ Parameter - variable that holds the value of the argument inside the body of the
 *** Closures
 Closures - enclose over variables used in a body. If we return a closure from another function body we should provide a mechanism to capture outside variable and not let it go out of scope.
 
+*** Object-oriented programming
+**** Prototype-based
+Objects inherit or delegate behaviour to each other. More flexible, more boilerplate and hussle.
+**** Class-based
+There are object blueprints which we can instantiate
+
+**** Inheritance
+Deirved class or subclass vs base class or superclass
 
 ** Compiler vs interpreter
 *** Compilation
