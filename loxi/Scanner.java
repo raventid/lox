@@ -198,6 +198,9 @@ class Scanner {
     }
 
     private char advance() {
+        // System.out.println("Source len: " + source.length());
+        // System.out.println("Char in source: " + source.charAt(current));
+        // System.out.println("Current: " + current);
         current++;
         return source.charAt(current - 1);
     }
