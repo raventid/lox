@@ -71,7 +71,7 @@ class Scanner {
         case '\t':
             break;
         case '\n':
-            advance();
+            line++;
             break;
         case '!':
             addToken(match('=') ? BANG_EQUAL : BANG);
