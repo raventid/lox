@@ -125,7 +125,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 return (double)left - (double)right;
             case SLASH:
                 checkNumberOperands(expression.operator, left, right);
-                return (double)left - (double)right;
+                return (double)left / (double)right;
             case STAR:
                 checkNumberOperands(expression.operator, left, right);
                 return (double)left * (double)right;
