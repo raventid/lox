@@ -33,33 +33,33 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
     @Override
     public String visitVariableExpr(Expr.Variable expr) {
-        return "UNSUPPORTED_TOKEN";
+        return "AST_PRINTER_UNSUPPORTED_TOKEN";
     }
 
     @Override
     public String visitAssignExpr(Expr.Assign expr) {
-        return "UNSUPPORTED_TOKEN";
+        return "AST_PRINTER_UNSUPPORTED_TOKEN";
     }
 
     // Visitor implementation for statements
     @Override
     public String visitBlockStmt(Stmt.Block stmt) {
-        return "UNSUPPORTED_Block_Statement";
+        return "AST_PRINTER_UNSUPPORTED_Block_Statement";
     }
 
     @Override
     public String visitExpressionStmt(Stmt.Expression stmt) {
-        return "UNSUPPORTED_TOKEN_Expression_Statement";
+        return "AST_PRINTER_UNSUPPORTED_TOKEN_Expression_Statement";
     }
 
     @Override
     public String visitPrintStmt(Stmt.Print stmt) {
-        return "UNSUPPORTED_TOKEN_Print_Statement";
+        return "AST_PRINTER_UNSUPPORTED_TOKEN_Print_Statement";
     }
 
     @Override
     public String visitVarStmt(Stmt.Var stmt) {
-        return "UNSUPPORTED_TOKEN_Var_Statement";
+        return "AST_PRINTER_UNSUPPORTED_TOKEN_Var_Statement";
     }
 
     private String parenthesize(String name, Expr... exprs) {
