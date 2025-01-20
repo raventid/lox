@@ -141,9 +141,14 @@ var a = 10;
 a = 20; // a is called l-value, 20 is called r-value (l-value is an assignment place, r-value is expr to eval)
 #+end_src
 
-TODO: How exactly does lack of explicit declaration complicates scope analyses. (i.e. in Ruby we use implicit decls and it works)
-
-Why use ~var~ declaration and not an implicit declaration like ~a = 10~? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes it is easier to work with explicit decls.
+Why use ~var~ declaration and not an implicit declaration like ~a = 10~? It complicates the work with embedded scopes and with growing popularity of functional constructions, lambdas and deep scopes. It is easier to work with explicit decls. Let's elaborate on this a bit, for example:
+#+begin_src ruby
+a = 10
+begin
+  a = 20
+end
+#+end_src
+So, in the example above - do we assign 20 to an outside ~a~ or we create a new variable inside a block? There are multiple ways we can reply to this question and different languages approache this problem from a different angle. Javascript creates new variable in a global env for example (brilliant as usual!)
 
 ** Loxi
 *** REPL
