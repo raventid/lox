@@ -150,6 +150,13 @@ end
 #+end_src
 So, in the example above - do we assign 20 to an outside ~a~ or we create a new variable inside a block? There are multiple ways we can reply to this question and different languages approache this problem from a different angle. Javascript creates new variable in a global env for example (brilliant as usual!)
 
+*** Control flow and execution
+This is an exaggeration, but we can roughly split control flow into 2 types:
+**** Conditional/Branching
+Control flow, what piece of code we choose to execute
+**** Looping
+Should or should not we repeate an execution of some piece of code
+
 ** Loxi
 *** REPL
 I use makefiles to control ~build and execute~ procedure, please use ~make repl~ to run interpreter.
