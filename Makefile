@@ -11,6 +11,8 @@ ex_closure:
 	javac loxi/Main.java && java loxi/Main examples/closure.lox
 ex_arith:
 	javac loxi/Main.java && java loxi/Main examples/arithmetic.lox
+ex_forloop:
+	javac loxi/Main.java && java loxi/Main examples/for_loop.lox
 
 
 repl: loxi
