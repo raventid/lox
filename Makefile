@@ -1,5 +1,8 @@
 .PHONY: loxi loxbi ga repl
 
+build:
+	javac loxi/Main.java
+
 loxi:
 	javac loxi/Main.java && java loxi/Main
 loxbi:
