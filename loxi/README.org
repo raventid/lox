@@ -160,3 +160,6 @@ Should or should not we repeate an execution of some piece of code
 ** Loxi
 *** REPL
 I use makefiles to control ~build and execute~ procedure, please use ~make repl~ to run interpreter.
+
+*** Print statement
+Print statement was implemented very early in a language, so it could be removed after introducing functions and callable objects. We prefer to keep it to avoid extra work, but it is something to reconsider.
