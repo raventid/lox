@@ -16,6 +16,8 @@ ex_arith:
 	javac loxi/Main.java && java loxi/Main examples/arithmetic.lox
 ex_forloop:
 	javac loxi/Main.java && java loxi/Main examples/for_loop.lox
+ex_hi_fun:
+	javac loxi/Main.java && java loxi/Main examples/say_hi_function.lox
 
 
 repl: loxi
