@@ -1,0 +1,14 @@
+var a = 10;
+var b = "hello";
+{
+    var b;
+    fun print_a_and_b() {
+        print a;
+        print b;
+    }
+
+    b = "hi";
+    a = 20;
+
+    print_a_and_b();
+}

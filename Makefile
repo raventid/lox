@@ -18,6 +18,8 @@ ex_forloop:
 	javac loxi/Main.java && java loxi/Main examples/for_loop.lox
 ex_hi_fun:
 	javac loxi/Main.java && java loxi/Main examples/say_hi_function.lox
+ex_breaking_resolver:
+	javac loxi/Main.java && java loxi/Main examples/breaking_resolver.lox
 
 
 repl: loxi
