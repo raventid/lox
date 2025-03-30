@@ -8,7 +8,7 @@ import java.util.Stack;
 class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     private final Interpreter interpreter;
     private final Stack<Map<String, Boolean>> scopes = new Stack<>();
-    private FunctionType currentFunction = FunctionType.NONE;
+    private FunctionType currentFunction = FunctionType.NONE; // TODO: Maybe rename to TOP_LEVEL ???
     private final ErrorReporter er = new ErrorReporter();
 
     Resolver(Interpreter interpreter) {
