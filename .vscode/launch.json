@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "loxbi.Main",
+            "projectName": "lox_3593467a"
+        },
+        {
+            "type": "java",
+            "name": "Main(1)",
+            "request": "launch",
+            "mainClass": "loxi.Main",
+            "projectName": "lox_3593467a"
+        },
+        {
+            "type": "java",
+            "name": "GenerateAst",
+            "request": "launch",
+            "mainClass": "tool.GenerateAst",
+            "projectName": "lox_3593467a"
+        },
+        {
+            "type": "java",
+            "name": "Debug Lox with File",
+            "request": "launch",
+            "mainClass": "loxi.Main",
+            "projectName": "lox_3593467a",
+            "args": [
+                "${input:filePath}"
+            ],
+            "preLaunchTask": "compile"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "filePath",
+            "type": "promptString",
+            "description": "Enter the path to the Lox file to execute",
+            "default": "examples/for_loop.lox"
+        }
+    ]
+}
