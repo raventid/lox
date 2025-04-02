@@ -54,7 +54,9 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     public Void visitIfStmt(Stmt.If stmt) {
         resolve(stmt.condition);
         resolve(stmt.thenBranch);
-        if(stmt.elseBranch != null) resolve(stmt.elseBranch);
+        if (stmt.elseBranch != null) {
+            resolve(stmt.elseBranch);
+        }
         return null;
     }
 
@@ -79,12 +81,12 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitVarStmt(Stmt.Var stmt) {
-       declare(stmt.name);
-       if (stmt.initializer != null) {
-           resolve(stmt.initializer);
-       }
-       define(stmt.name);
-       return null;
+        declare(stmt.name);
+        if (stmt.initializer != null) {
+            resolve(stmt.initializer);
+        }
+        define(stmt.name);
+        return null;
     }
 
     @Override
@@ -112,7 +114,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     public Void visitCallExpr(Expr.Call expr) {
         resolve(expr.callee);
 
-        for(Expr argument : expr.arguments) {
+        for (Expr argument : expr.arguments) {
             resolve(argument);
         }
 
@@ -134,7 +136,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     public Void visitLogicalExpr(Expr.Logical expr) {
         resolve(expr.left);
         resolve(expr.right);
-       return null;
+        return null;
     }
 
     @Override
@@ -145,7 +147,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitVariableExpr(Expr.Variable expr) {
-        if(!scopes.isEmpty() && scopes.peek().get(expr.name.lexeme) == Boolean.FALSE) {
+        if (!scopes.isEmpty() && scopes.peek().get(expr.name.lexeme) == Boolean.FALSE) {
             this.er.error(expr.name, "Can't read local variable in its own initializer.");
         }
 
@@ -184,7 +186,9 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     private void declare(Token name) {
-        if (scopes.isEmpty()) { return; }
+        if (scopes.isEmpty()) {
+            return;
+        }
 
         Map<String, Boolean> scope = scopes.peek();
 
@@ -195,7 +199,9 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     private void define(Token name) {
-        if (scopes.isEmpty()) { return; }
+        if (scopes.isEmpty()) {
+            return;
+        }
         scopes.peek().put(name.lexeme, true);
     }
 

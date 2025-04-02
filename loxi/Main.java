@@ -99,8 +99,10 @@ public class Main {
          }
       }
 
+      // Resolver is doing static analysis, so we should first call it before running the interpreter
       Resolver resolver = new Resolver(interpreter);
       resolver.resolve(statements);
+
 
       if (hadError) { return; }
 
