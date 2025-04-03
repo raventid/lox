@@ -3,11 +3,28 @@
 Interpreters implemented after reading https://craftinginterpreters.com/.
 
 ** Some commands
-To generate Expr.java file run:
+To generate Expressions and Statements classes run:
 #+begin_src bash
-lox 1 % make genexp
-javac tool/GenerateAst.java && java tool/GenerateAst loxi
+make genast
 #+end_src
+
+Run jlox (Java based) interpreter: 
+#+begin_src bash
+make jlox
+#+end_src
+
+Optionally you can provide an example file (the lookup directory is examples/, file extension is assumed to be .lox)
+#+begin_src bash
+make jlox f=closure
+#+end_src
+
+Run clox (C based) bytecode VM: 
+#+begin_src bash
+make clox
+#+end_src
+
+If you want to understand how commands are implemented and what are other options, refer to Makefile.
+
 
 ** Some notes
 |----------------------------+-----------------+-------------------|
