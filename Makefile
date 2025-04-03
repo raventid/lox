@@ -1,12 +1,18 @@
-.PHONY: loxi loxbi ga repl
+.PHONY: loxi loxbi ga repl cbuild clox
 
 build:
 	javac loxi/Main.java
+cbuild:
+	mkdir -p target
+	gcc clox/main.c -I clox -Wall -Wextra -g -o target/clox
+
+clean:
+	rm -rf target/
 
 loxi:
 	javac loxi/Main.java && java loxi/Main
-loxbi:
-	javac loxbi/Main.java && java loxbi/Main
+clox: cbuild
+	./target/clox
 genast:
 	javac tool/GenerateAst.java && java tool/GenerateAst loxi
 
