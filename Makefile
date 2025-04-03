@@ -1,4 +1,4 @@
-.PHONY: loxi loxbi ga repl cbuild clox
+.PHONY: loxi ga repl cbuild clox
 
 build:
 	javac loxi/Main.java
