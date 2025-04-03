@@ -1,3 +1,0 @@
-#+TITLE: Readme
-
-This is my notes for loxbi interpeter.
