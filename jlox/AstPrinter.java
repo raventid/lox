@@ -1,4 +1,4 @@
-package loxi;
+package jlox;
 
 class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     String print(Expr expr) {

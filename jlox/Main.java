@@ -1,4 +1,4 @@
-package loxi;
+package jlox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,13 +7,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
-import loxi.Scanner;
-import loxi.ErrorReporter;
-import loxi.AstPrinter;
-import loxi.Parser;
-import loxi.Interpreter;
-import loxi.Environment;
 
 public class Main {
    private static final Interpreter interpreter = new Interpreter();
@@ -39,8 +32,11 @@ public class Main {
       run(new String(bytes, Charset.defaultCharset()));
 
       // Indicate an error in the exit code.
-      if (hadError) { System.exit(65); }
-      if (hadRuntimeError) System.exit(70);
+      if (hadError) {
+         System.exit(65);
+      }
+      if (hadRuntimeError)
+         System.exit(70);
    }
 
    private static void runPrompt() throws IOException {
@@ -61,7 +57,7 @@ public class Main {
                showLexerOutput = true;
                System.out.println("Lexer output has been enabled");
             }
-         } else if(commandCode(line) == 2) {
+         } else if (commandCode(line) == 2) {
             if (showParserOutput) {
                showParserOutput = false;
                System.out.println("Parser output has been disabled");
@@ -69,7 +65,7 @@ public class Main {
                showParserOutput = true;
                System.out.println("Parser output has been enabled");
             }
-         // Else we should handle loxi code
+            // Else we should handle loxi code
          } else {
             run(line);
          }
@@ -90,21 +86,25 @@ public class Main {
       Parser parser = new Parser(tokens);
       List<Stmt> statements = parser.parse();
 
-      if (hadError) { return; }
+      if (hadError) {
+         return;
+      }
 
       if (showParserOutput) {
          System.out.println("TODO: IMPLEMENT PROPER INSPECTION OF PARSER STATEMENTS");
-         for(Stmt statement : statements) {
+         for (Stmt statement : statements) {
             System.out.println(new AstPrinter().print_statement(statement));
          }
       }
 
-      // Resolver is doing static analysis, so we should first call it before running the interpreter
+      // Resolver is doing static analysis, so we should first call it before running
+      // the interpreter
       Resolver resolver = new Resolver(interpreter);
       resolver.resolve(statements);
 
-
-      if (hadError) { return; }
+      if (hadError) {
+         return;
+      }
 
       interpreter.interpret(statements);
    }
@@ -112,9 +112,15 @@ public class Main {
    // No command: -1
    // Print lexer output: 1
    private static int commandCode(String line) {
-      if (line.length() < 2) { return -1; }
-      if (line.substring(0, 2).equals(":l")) { return 1; }
-      if (line.substring(0, 2).equals(":p")) { return 2; }
+      if (line.length() < 2) {
+         return -1;
+      }
+      if (line.substring(0, 2).equals(":l")) {
+         return 1;
+      }
+      if (line.substring(0, 2).equals(":p")) {
+         return 2;
+      }
       return -1;
    }
 

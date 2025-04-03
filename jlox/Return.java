@@ -1,4 +1,4 @@
-package loxi;
+package jlox;
 
 // Using exception for flow control instead of errors: LOVE IT SINS I TRIED IT FOR THE FIRST TIME
 class Return extends RuntimeException {

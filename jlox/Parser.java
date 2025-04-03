@@ -1,10 +1,11 @@
-package loxi;
+package jlox;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.ArrayList;
 
-import static loxi.TokenType.*;
+import static jlox.TokenType.*;
+
+import java.util.ArrayList;
 
 // Grammar rules for the Parser. You can also find them in a ./Readme.org
 //
@@ -41,12 +42,12 @@ import static loxi.TokenType.*;
 // | printStmt   | "print" expression ";" ;  |
 // |-------------+---------------------------|
 
-
 class Parser {
     private final List<Token> tokens;
     private int current = 0;
 
-    private static class ParseError extends RuntimeException {}
+    private static class ParseError extends RuntimeException {
+    }
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -63,12 +64,16 @@ class Parser {
     }
 
     // // // // // // // // // // // // // // // //
-    // Grammar rules functions: Statement level  //
+    // Grammar rules functions: Statement level //
     // // // // // // // // // // // // // // // //
     private Stmt declaration() {
         try {
-            if (match(FUN)) { return function("function"); }
-            if (match(VAR)) { return varDeclaration(); }
+            if (match(FUN)) {
+                return function("function");
+            }
+            if (match(VAR)) {
+                return varDeclaration();
+            }
             return statement();
         } catch (ParseError error) {
             synchronize();
@@ -89,12 +94,24 @@ class Parser {
     }
 
     private Stmt statement() {
-        if (match(FOR)) { return forStatement(); }
-        if (match(IF)) { return ifStatement(); }
-        if (match(PRINT)) { return printStatement(); }
-        if (match(RETURN)) { return returnStatement(); }
-        if (match(WHILE)) { return whileStatement(); }
-        if (match(LEFT_BRACE)) { return new Stmt.Block(block()); }
+        if (match(FOR)) {
+            return forStatement();
+        }
+        if (match(IF)) {
+            return ifStatement();
+        }
+        if (match(PRINT)) {
+            return printStatement();
+        }
+        if (match(RETURN)) {
+            return returnStatement();
+        }
+        if (match(WHILE)) {
+            return whileStatement();
+        }
+        if (match(LEFT_BRACE)) {
+            return new Stmt.Block(block());
+        }
 
         return expressionStatement();
     }
@@ -176,14 +193,14 @@ class Parser {
     }
 
     private Stmt returnStatement() {
-       Token keyword = previous();
-       Expr value = null;
-       if (!check(SEMICOLON)) {
-           value = expression();
-       }
+        Token keyword = previous();
+        Expr value = null;
+        if (!check(SEMICOLON)) {
+            value = expression();
+        }
 
-       consume(SEMICOLON, "Expect ';' after return value.");
-       return new Stmt.Return(keyword, value);
+        consume(SEMICOLON, "Expect ';' after return value.");
+        return new Stmt.Return(keyword, value);
     }
 
     private Stmt whileStatement() {
@@ -239,7 +256,7 @@ class Parser {
             Expr value = assignment();
 
             if (expr instanceof Expr.Variable) {
-                Token name = ((Expr.Variable)expr).name;
+                Token name = ((Expr.Variable) expr).name;
                 return new Expr.Assign(name, value);
             }
 
@@ -252,7 +269,7 @@ class Parser {
     private Expr or() {
         Expr expr = and();
 
-        while(match(OR)) {
+        while (match(OR)) {
             Token operator = previous();
             Expr right = and();
             expr = new Expr.Logical(expr, operator, right);
@@ -264,7 +281,7 @@ class Parser {
     private Expr and() {
         Expr expr = equality();
 
-        while(match(AND)) {
+        while (match(AND)) {
             Token operator = previous();
             Expr right = equality();
             expr = new Expr.Logical(expr, operator, right);
@@ -286,15 +303,15 @@ class Parser {
     }
 
     private Expr comparison() {
-      Expr expr = term();
+        Expr expr = term();
 
-      while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
-          Token operator = previous();
-          Expr right = term();
-          expr = new Expr.Binary(expr, operator, right);
-      }
+        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+            Token operator = previous();
+            Expr right = term();
+            expr = new Expr.Binary(expr, operator, right);
+        }
 
-      return expr;
+        return expr;
     }
 
     private Expr term() {
@@ -351,7 +368,7 @@ class Parser {
     private Expr call() {
         Expr expr = primary();
 
-        while(true) {
+        while (true) {
             if (match(LEFT_PAREN)) {
                 expr = finishCall(expr);
             } else {
@@ -363,9 +380,15 @@ class Parser {
     }
 
     private Expr primary() {
-        if (match(FALSE)) { return new Expr.Literal(false); }
-        if (match(TRUE)) { return new Expr.Literal(true); }
-        if (match(NIL)) { return new Expr.Literal(null); }
+        if (match(FALSE)) {
+            return new Expr.Literal(false);
+        }
+        if (match(TRUE)) {
+            return new Expr.Literal(true);
+        }
+        if (match(NIL)) {
+            return new Expr.Literal(null);
+        }
 
         if (match(NUMBER, STRING)) {
             return new Expr.Literal(previous().literal);
@@ -390,22 +413,26 @@ class Parser {
 
     private boolean match(TokenType... types) {
         for (TokenType type : types) {
-           if (check(type)) {
-               advance(); // consume token
-               return true;
-           }
+            if (check(type)) {
+                advance(); // consume token
+                return true;
+            }
         }
 
         return false;
     }
 
     private Token consume(TokenType tokenType, String message) {
-        if (check(tokenType)) { return advance(); }
+        if (check(tokenType)) {
+            return advance();
+        }
         throw error(peek(), message);
     }
 
     private Token advance() {
-        if (!isAtEnd()) { current++; }
+        if (!isAtEnd()) {
+            current++;
+        }
         return previous();
     }
 
@@ -413,18 +440,20 @@ class Parser {
         advance();
 
         while (!isAtEnd()) {
-            if (previous().type == SEMICOLON) { return; }
+            if (previous().type == SEMICOLON) {
+                return;
+            }
 
             switch (peek().type) {
-            case CLASS:
-            case FUN:
-            case VAR:
-            case FOR:
-            case IF:
-            case WHILE:
-            case PRINT:
-            case RETURN:
-                return;
+                case CLASS:
+                case FUN:
+                case VAR:
+                case FOR:
+                case IF:
+                case WHILE:
+                case PRINT:
+                case RETURN:
+                    return;
             }
 
             advance();
@@ -437,7 +466,9 @@ class Parser {
     }
 
     private boolean check(TokenType type) {
-        if (isAtEnd()) { return false; }
+        if (isAtEnd()) {
+            return false;
+        }
         return peek().type == type;
     }
 

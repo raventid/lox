@@ -1,4 +1,4 @@
-package loxi;
+package jlox;
 
 class ErrorReporter {
     static void error(int line, String message) {
