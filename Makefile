@@ -8,7 +8,7 @@ jbuild:
 	javac -d target jlox/*.java
 cbuild:
 	mkdir -p target
-	gcc clox/main.c -I clox -Wall -Wextra -g -o target/clox
+	gcc clox/*.c -I clox -Wall -Wextra -g -o target/clox
 
 genast:
 	mkdir -p target
