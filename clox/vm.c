@@ -36,6 +36,13 @@ static InterpretResult run()
             break;
         }
 
+        case OP_NEGATE:
+        {
+            Value value = pop();
+            push(-value);
+            break;
+        }
+
         case OP_RETURN:
         {
             printValue(pop());
