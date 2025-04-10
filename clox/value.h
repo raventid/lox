@@ -5,7 +5,8 @@
 
 typedef double Value;
 
-// Since C does not have generic types, we need to define a type that can hold any value. (We already have a vector defined for chunks in chunk.h)
+// Since C does not have generic types, we need to define a type that can hold any value.
+// (We already have a vector defined for chunks in chunk.h)
 typedef struct
 {
     int capacity;
