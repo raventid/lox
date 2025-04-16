@@ -10,6 +10,8 @@ cbuild:
 	mkdir -p target
 	gcc clox/*.c -I clox -Wall -Wextra -g -o target/clox
 
+mca: /opt/homebrew/Cellar/llvm/20.1.3/bin/llvm-mca target/clox.s -skip-unsupported-instructions=parse-failure
+
 genast:
 	mkdir -p target
 	javac -d target tool/GenerateAst.java
