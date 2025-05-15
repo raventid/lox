@@ -103,6 +103,12 @@ static InterpretResult run()
             break;
         }
 
+        case OP_NOT:
+        {
+            push(BOOL_VAL(isFalsey(pop())));
+            break;
+        }
+
         case OP_RETURN:
         {
             printValue(pop());
@@ -180,4 +186,9 @@ Value pop()
 static Value peek(int distance)
 {
     return vm.stackTop[-1 - distance];
+}
+
+static bool isFalsey(Value value)
+{
+    return IS_NIL(value) || (IS_BOOL(value) && !AS_BOOL(value));
 }
