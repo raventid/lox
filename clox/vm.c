@@ -68,6 +68,25 @@ static InterpretResult run()
             break;
         }
 
+        case OP_EQUAL:
+        {
+            Value b = pop();
+            Value a = pop();
+            push(BOOL_VAL(valuesEqual(a, b)));
+            break;
+        }
+
+        case OP_GREATER:
+        {
+            BINARY_OP(BOOL_VAL, >);
+            break;
+        }
+
+        case OP_LESS:
+        {
+            BINARY_OP(BOOL_VAL, <);
+            break;
+        }
         case OP_NEGATE:
         {
             if (!IS_NUMBER(peek(0)))
