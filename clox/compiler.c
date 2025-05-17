@@ -184,7 +184,7 @@ static void binary()
     {
     case TOKEN_BANG_EQUAL:
         emitBytes(OP_EQUAL, OP_NOT); // << we don't implement all the instructions literally
-        // << here we translate != to OP_EQUAL + OP_NOT, to save on 
+        // << here we translate != to OP_EQUAL + OP_NOT, to save on
         break;
     case TOKEN_EQUAL_EQUAL:
         emitByte(OP_EQUAL);
@@ -251,6 +251,11 @@ static void number()
     emitConstant(NUMBER_VAL(value));
 }
 
+static void string()
+{
+    emitConstant(OBJ_VAL(copyString(parser.previous.start + 1, parser.previous.length - 2)));
+}
+
 static void unary()
 {
     TokenType operatorType = parser.previous.type;
@@ -296,7 +301,7 @@ ParseRule rules[] = {
     [TOKEN_LESS] = {NULL, binary, PREC_COMPARISON},
     [TOKEN_LESS_EQUAL] = {NULL, binary, PREC_COMPARISON},
     [TOKEN_IDENTIFIER] = {NULL, NULL, PREC_NONE},
-    [TOKEN_STRING] = {NULL, NULL, PREC_NONE},
+    [TOKEN_STRING] = {string, NULL, PREC_NONE},
     [TOKEN_NUMBER] = {number, NULL, PREC_NONE},
     [TOKEN_AND] = {NULL, NULL, PREC_NONE},
     [TOKEN_CLASS] = {NULL, NULL, PREC_NONE},
