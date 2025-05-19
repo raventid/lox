@@ -18,6 +18,7 @@ typedef enum
 struct Obj
 {
     ObjType type;
+    struct Obj *next; // << intrusive list, first iteration of garbage collector
 };
 
 struct ObjString

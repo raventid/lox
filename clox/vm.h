@@ -18,7 +18,11 @@ typedef struct
     uint8_t *ip;
     Value stack[STACK_MAX];
     Value *stackTop;
+
+    Obj *objects; // << pointer to the head of all allocated objects list
 } VM;
+
+extern VM vm; // << global variable for the VM, initially to use in object.c for garbage collection tracking
 
 void initVM();
 void freeVM();

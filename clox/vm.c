@@ -180,6 +180,7 @@ static void runtimeError(const char *format, ...)
 void initVM()
 {
     resetStack();
+    vm.objects = NULL;
 }
 
 InterpretResult interpret(const char *source)
@@ -205,6 +206,7 @@ InterpretResult interpret(const char *source)
 
 void freeVM()
 {
+    freeObjects();
 }
 
 void push(Value value)
