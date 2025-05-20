@@ -26,6 +26,7 @@ struct ObjString
     Obj obj;
     int length;
     char *chars;
+    uint32_t hash; // << cashing the hash for string comparison (for our table implementation)
 };
 
 ObjString *takeString(char *chars, int length);
