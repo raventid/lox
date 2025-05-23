@@ -181,6 +181,7 @@ void initVM()
 {
     resetStack();
     vm.objects = NULL;
+    initTable(&vm.strings);
 }
 
 InterpretResult interpret(const char *source)
@@ -206,6 +207,7 @@ InterpretResult interpret(const char *source)
 
 void freeVM()
 {
+    freeTable(&vm.strings);
     freeObjects();
 }
 
