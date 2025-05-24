@@ -30,7 +30,7 @@ static int constantInstruction(const char *name, Chunk *chunk, int offset)
 
 int disassembleInstruction(Chunk *chunk, int offset)
 {
-    printf("%04d ", offset);
+    printf("== %04d ", offset);
 
     if (offset > 0 && chunk->lines[offset] == chunk->lines[offset - 1])
     {
@@ -73,6 +73,8 @@ int disassembleInstruction(Chunk *chunk, int offset)
         return simpleInstruction("OP_DIVIDE", offset);
     case OP_NOT:
         return simpleInstruction("OP_NOT", offset);
+    case OP_PRINT:
+        return simpleInstruction("OP_PRINT", offset);
 
     default:
         printf("Unknown opcode %d\n", instruction);

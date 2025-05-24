@@ -12,6 +12,7 @@ typedef enum
     OP_TRUE,
     OP_FALSE,
     OP_NEGATE,
+    OP_PRINT,
     OP_EQUAL,
     OP_GREATER,
     OP_LESS,

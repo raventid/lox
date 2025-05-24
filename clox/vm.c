@@ -89,6 +89,14 @@ static InterpretResult run()
             BINARY_OP(BOOL_VAL, <);
             break;
         }
+
+        case OP_PRINT:
+        {
+            printValue(pop());
+            printf("\n");
+            break;
+        }
+
         case OP_NEGATE:
         {
             if (!IS_NUMBER(peek(0)))
@@ -147,8 +155,6 @@ static InterpretResult run()
 
         case OP_RETURN:
         {
-            printValue(pop());
-            printf("\n");
             return INTERPRET_OK;
         }
         }
