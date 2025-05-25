@@ -14,6 +14,7 @@ typedef enum
     OP_NEGATE,
     OP_PRINT,
     OP_EQUAL,
+    OP_POP,
     OP_GREATER,
     OP_LESS,
     OP_ADD,
