@@ -23,6 +23,7 @@ typedef enum
     OP_DIVIDE,
     OP_NOT,
     OP_DEFINE_GLOBAL,
+    OP_GET_GLOBAL,
 } OpCode;
 
 typedef struct
