@@ -181,6 +181,18 @@ static InterpretResult run()
             break;
         }
 
+        case OP_SET_GLOBAL:
+        {
+            ObjString *name = READ_STRING();
+            if (tableSet(&vm.globals, name, peek(0))) // we receive true if it a new key (so we don't have this global recorded yet)
+            {
+                tableDelete(&vm.globals, name); // we already created an entry for undefined variable, so we need to delete it
+                runtimeError("Undefined variable '%s'.", name->chars);
+                return INTERPRET_RUNTIME_ERROR;
+            }
+            break;
+        }
+
         case OP_RETURN:
         {
             return INTERPRET_OK;
