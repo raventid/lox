@@ -217,6 +217,13 @@ static InterpretResult run()
             break;
         }
 
+        case OP_JUMP:
+        {
+            uint16_t offset = READ_SHORT(); // TODO: do we need 16 bytes offset if our ip is uint8_t?
+            vm.ip += offset;
+            break;
+        }
+
         case OP_RETURN:
         {
             return INTERPRET_OK;

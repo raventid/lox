@@ -635,8 +635,18 @@ static void ifStatement()
     // backpatching, we need to generate jump instruction now,
     // but we don't know where it will jump yet (only after we compile the then branch with a statement command)
     int thenJump = emitJump(OP_JUMP_IF_FALSE);
+    emitByte(OP_POP); // remove computed condition we put on the stack (then branch case)
     statement();
+    int elseJump = emitJump(OP_JUMP); // in case we entered the then branch, we need to jump over the else branch
+
     patchJump(thenJump);
+    emitByte(OP_POP); // remove computed condition (else branch case)
+
+    if (match(TOKEN_ELSE))
+    {
+        statement();
+    }
+    patchJump(elseJump);
 }
 
 static void printStatement()
