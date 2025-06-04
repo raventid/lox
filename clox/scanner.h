@@ -62,5 +62,7 @@ typedef struct
 
 void initScanner(const char *source);
 Token scanToken();
+// @raventid addition
+const char *tt_toString(TokenType token_type);
 
 #endif
