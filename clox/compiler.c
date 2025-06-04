@@ -429,9 +429,19 @@ static void defineVariable(uint8_t global)
     emitBytes(OP_DEFINE_GLOBAL, global);
 }
 
-/**
- * @brief After consuming a (, recurse into expression until we hit )
- */
+static void and_(bool canAssign)
+{
+    // At the point this is called, the left-hand side expression has already been
+    // compiled. That means at runtime, its value will be on top of the stack. If that
+    // value is falsey, then we know the entire and must be false, so we skip the right
+    // operand
+    int endJump = emitJump(OP_JUMP_IF_FALSE);
+    emitByte(OP_POP);
+    parsePrecedence(PREC_AND); // 414
+    patchJump(endJump);
+}
+
+// After consuming a `(`, recurse into expression until we hit `)`
 static void grouping(bool canAssign)
 {
     expression();
@@ -528,7 +538,7 @@ ParseRule rules[] = {
     [TOKEN_IDENTIFIER] = {variable, NULL, PREC_NONE},
     [TOKEN_STRING] = {string, NULL, PREC_NONE},
     [TOKEN_NUMBER] = {number, NULL, PREC_NONE},
-    [TOKEN_AND] = {NULL, NULL, PREC_NONE},
+    [TOKEN_AND] = {NULL, and_, PREC_AND},
     [TOKEN_CLASS] = {NULL, NULL, PREC_NONE},
     [TOKEN_ELSE] = {NULL, NULL, PREC_NONE},
     [TOKEN_FALSE] = {literal, NULL, PREC_NONE},
@@ -557,10 +567,12 @@ static void parsePrecedence(Precedence precedence)
 {
     advance();
 
-    printf("current token is and token type is: %.*s\n", parser.current.length, parser.current.start);
-    printf("previous token is: %.*s\n", parser.previous.length, parser.previous.start);
+    printf("parsePrecedence | initiating new call\n");
+    printf("parsePrecedence | getting prefix rule for: `%s`\n", tt_toString(parser.previous.type));
 
     ParseFn prefixRule = getRule(parser.previous.type)->prefix;
+    // printf("parsePrecedence | prefixRule is `%p`\n", prefixRule);
+
     if (prefixRule == NULL)
     {
         error("Expect expression.");
@@ -573,7 +585,9 @@ static void parsePrecedence(Precedence precedence)
     while (precedence <= getRule(parser.current.type)->precedence)
     {
         advance();
+        // printf("parsePrecedence | getting infix rule for: `%.*s`\n", parser.previous.start);
         ParseFn infixRule = getRule(parser.previous.type)->infix;
+        // printf("parsePrecedence | infixRule is `%p`\n", infixRule);
         infixRule(canAssign);
     }
 
