@@ -166,6 +166,20 @@ static void emitBytes(uint8_t byte1, uint8_t byte2)
     emitByte(byte2);
 }
 
+static void emitLoop(int loopStart)
+{
+    emitByte(OP_LOOP);
+
+    int offset = currentChunk()->count - loopStart + 2;
+    if (offset > UINT16_MAX)
+    {
+        error("Loop body is too large.");
+    }
+
+    emitByte((offset >> 8) & 0xff);
+    emitByte(offset & 0xff);
+}
+
 static int emitJump(uint8_t instruction)
 {
     emitByte(instruction);
@@ -652,6 +666,22 @@ static void expressionStatement()
     emitByte(OP_POP);
 }
 
+// @brief Compile a for statement. only supports the for(;;) {} form
+static void forStatement()
+{
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after 'for'.");
+    consume(TOKEN_SEMICOLON, "Expect ';'");
+
+    int loopStart = currentChunk()->count;
+
+    consume(TOKEN_SEMICOLON, "Expect ';'.");
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after for clauses.");
+
+    statement();
+
+    emitLoop(loopStart);
+}
+
 static void ifStatement()
 {
     consume(TOKEN_LEFT_PAREN, "Expect '(' after 'if'.");
@@ -680,6 +710,29 @@ static void printStatement()
     expression();
     consume(TOKEN_SEMICOLON, "Expect ';' after value.");
     emitByte(OP_PRINT);
+}
+
+static void whileStatement()
+{
+    // this is a point before the while loop
+    // we should jump here if we want to repeat the loop
+    // WE NEED to RECOMPUTE the CONDITION EXPRESSION to see if it is still true or not!
+
+    int loopStart = currentChunk()->count;
+
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after 'while'.");
+    expression();
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after condition.");
+
+    int exitJump = emitJump(OP_JUMP_IF_FALSE); // jump over the body of the loop
+
+    emitByte(OP_POP); // remove computed condition from the stack in case we entered the loop body
+    statement();
+
+    emitLoop(loopStart);
+
+    patchJump(exitJump);
+    emitByte(OP_POP); // remove computed condition from the stack again, in case we entered the loop
 }
 
 static void synchronize()
@@ -740,6 +793,14 @@ static void statement()
     else if (match(TOKEN_IF))
     {
         ifStatement();
+    }
+    else if (match(TOKEN_WHILE))
+    {
+        whileStatement();
+    }
+    else if (match(TOKEN_FOR))
+    {
+        forStatement();
     }
     else if (match(TOKEN_LEFT_BRACE))
     {
