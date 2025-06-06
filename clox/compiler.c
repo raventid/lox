@@ -669,17 +669,76 @@ static void expressionStatement()
 // @brief Compile a for statement. only supports the for(;;) {} form
 static void forStatement()
 {
+    // the overall logic is a bit tricky, so better to refer to the book
+    // https://craftinginterpreters.com/jumping-back-and-forth.html#increment-clause
+    // full loop works like:
+    // 1. compute condition, jump to the body,
+    // 2. do the body, jumpt to the increment,
+    // 3. do the increment, jump to the condition
+
+    // For loop allows a variable declaration in the initializer clause,
+    // so let's start a new scope for it
+    beginScope();
+
+    // Initializer clause
     consume(TOKEN_LEFT_PAREN, "Expect '(' after 'for'.");
-    consume(TOKEN_SEMICOLON, "Expect ';'");
+    if (match(TOKEN_SEMICOLON))
+    {
+        // No initializer clause, just an empty for loop
+    }
+    else if (match(TOKEN_VAR))
+    {
+        varDeclaration();
+    }
+    else
+    {
+        expressionStatement();
+    }
 
     int loopStart = currentChunk()->count;
 
-    consume(TOKEN_SEMICOLON, "Expect ';'.");
-    consume(TOKEN_RIGHT_PAREN, "Expect ')' after for clauses.");
+    // condition clause
+    int exitJump = -1;
+    if (!match(TOKEN_SEMICOLON))
+    {
+        expression();
+        consume(TOKEN_SEMICOLON, "Expect ';' after loop condition.");
+
+        // jump out of the loop if the condition is false
+        exitJump = emitJump(OP_JUMP_IF_FALSE);
+        emitByte(OP_POP); // remove computed condition from the stack
+    }
+
+    // Increment clause appears textually before the body, but executes after it.
+    //
+    // So we’ll jump over the increment, run the body,
+    // jump back up to the increment, run it, and then go to the next iteration.
+    if (!match(TOKEN_RIGHT_PAREN))
+    {
+        int bodyJump = emitJump(OP_JUMP);
+        int incrementStart = currentChunk()->count;
+
+        expression();
+        emitByte(OP_POP); // remove computed increment from the stack
+
+        consume(TOKEN_RIGHT_PAREN, "Expect ')' after for clauses.");
+
+        emitLoop(loopStart);        // jump back to the start of the loop
+        loopStart = incrementStart; // update the loop start to the increment
+        patchJump(bodyJump);        // patch the jump to the body of the loop
+    }
 
     statement();
 
     emitLoop(loopStart);
+
+    if (exitJump != -1)
+    {
+        patchJump(exitJump); // we only need this if we generated a jump instruction
+        emitByte(OP_POP);    // remove computed condition from the stack
+    }
+
+    endScope(); // End the scope of the for loop
 }
 
 static void ifStatement()
