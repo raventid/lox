@@ -20,5 +20,5 @@ genast:
 jlox: jbuild
 	cd target && java jlox/Main $(if $(f),../examples/$(f).lox,)
 clox: cbuild
-	./target/clox
+	./target/clox $(if $(f),examples/$(f).lox,)
 
