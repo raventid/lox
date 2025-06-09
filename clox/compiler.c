@@ -56,13 +56,15 @@ typedef enum
 
 typedef struct
 {
-    ObjFunction *function; // Pointer to the function we are in
-    FunctionType type;     // Helps to understand if it is toplevel or funtion body
+    // struct keyword here is a must, because we have not yet defined a Compiler struct name
+    struct Compiler *enclosing; // Pointer to the enclosing compiler, if any
+    ObjFunction *function;      // Pointer to the function we are in
+    FunctionType type;          // Helps to understand if it is toplevel or funtion body
 
     Local locals[UINT8_COUNT];
     int localCount;
     int scopeDepth;
-} Compiler;
+} Compiler; // maybe it is better to call it CompilationContext? (we compile everything like functions)
 
 Parser parser;
 Compiler *current = NULL;
@@ -238,6 +240,7 @@ static void patchJump(int offset)
 
 static void initCompiler(Compiler *compiler, FunctionType type)
 {
+    compiler->enclosing = current;
     compiler->function = NULL;
     compiler->type = type;
 
@@ -246,6 +249,13 @@ static void initCompiler(Compiler *compiler, FunctionType type)
 
     compiler->function = newFunction();
     current = compiler;
+
+    if (type != TYPE_SCRIPT)
+    {
+        // we call initCompiler right after we parsed function name, so it is in a previous token
+        // a bit risky tactic to rely on a global state, but makes everything simpler
+        current->function->name = copyString(parser.previous.start, parser.previous.length);
+    }
 
     Local *local = &current->locals[current->localCount++];
     local->depth = 0;
@@ -263,6 +273,7 @@ static ObjFunction *endCompiler()
         disassembleChunk(currentChunk(), function->name != NULL ? function->name->chars : "<script>");
     }
 #endif
+    current = current->enclosing;
     return function;
 }
 
@@ -449,6 +460,13 @@ static uint8_t parseVariable(const char *errorMessage)
 
 static void markInitialized()
 {
+    // In case this is a function name we define in global scope
+    // we don't need to mark it as initialized
+    if (current->localCount == 0)
+    {
+        return; // No locals to mark as initialized
+    }
+
     current->locals[current->localCount - 1].depth = current->scopeDepth;
 }
 
@@ -662,6 +680,52 @@ static void block()
     consume(TOKEN_RIGHT_BRACE, "Expect '}' after block.");
 }
 
+static void function(FunctionType type)
+{
+    Compiler compiler;
+    initCompiler(&compiler, type);
+    beginScope();
+
+    // Compile the parameter list.
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after function name.");
+    if (!check(TOKEN_RIGHT_PAREN)) // arguments
+    {
+        do
+        {
+            current->function->arity++;
+            if (current->function->arity > 255)
+            {
+                errorAtCurrent("Can't have more than 255 parameters.");
+            }
+            uint8_t paramConstant = parseVariable(
+                "Expect parameter name.");
+            defineVariable(paramConstant);
+        } while (match(TOKEN_COMMA));
+    }
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after parameters.");
+
+    // The body.
+    consume(TOKEN_LEFT_BRACE, "Expect '{' before function body.");
+    block();
+
+    // Create the function object.
+    ObjFunction *function = endCompiler();
+    emitBytes(OP_CONSTANT, makeConstant(OBJ_VAL(function)));
+}
+
+static void funDeclaration()
+{
+    // To make recursion work, we mark the function declaration’s variable initialized as
+    // soon as we compile the name, before we compile the body. That way the name
+    // can be referenced inside the body without generating an error.
+    // Function name is a variable, so we can use the same logic as for variables.
+    uint8_t global = parseVariable("Expect function name.");
+    markInitialized();
+
+    function(TYPE_FUNCTION);
+    defineVariable(global);
+}
+
 static void varDeclaration()
 {
     uint8_t global = parseVariable("Expect variable name.");
@@ -848,7 +912,11 @@ static void synchronize()
 
 static void declaration()
 {
-    if (match(TOKEN_VAR))
+    if (match(TOKEN_FUN))
+    {
+        funDeclaration();
+    }
+    else if (match(TOKEN_VAR))
     {
         varDeclaration();
     }
