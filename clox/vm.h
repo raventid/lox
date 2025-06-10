@@ -45,6 +45,8 @@ InterpretResult interpret(const char *source);
 void push(Value value);
 Value pop();
 static Value peek(int distance);
+// static bool call(ObjFunction *function, int argCount);
+static bool callValue(Value callee, int argCount);
 static bool isFalsey(Value value);
 static void concatenate();
 

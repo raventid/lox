@@ -4,7 +4,7 @@
 
 #include "common.h"
 #include "debug.h"
-#include "vm.h"
+// #include "vm.h"
 #include "compiler.h"
 #include "memory.h"
 
@@ -232,10 +232,36 @@ static InterpretResult run()
             break;
         }
 
+        case OP_CALL:
+        {
+            int argCount = READ_BYTE();
+
+            if (!callValue(peek(argCount), argCount))
+            {
+                return INTERPRET_RUNTIME_ERROR;
+            }
+
+            // if callValue() was successful, we need to update the frame pointer
+            frame = &vm.frames[vm.frameCount - 1];
+
+            break;
+        }
+
         case OP_RETURN:
         {
-            pop();
-            return INTERPRET_OK;
+            Value result = pop();
+
+            vm.frameCount--;
+            if (vm.frameCount == 0)
+            {
+                pop();
+                return INTERPRET_OK;
+            }
+
+            vm.stackTop = frame->slots;
+            push(result);
+            frame = &vm.frames[vm.frameCount - 1];
+            break;
         }
         }
     }
@@ -261,10 +287,25 @@ static void runtimeError(const char *format, ...)
     va_end(args);
     fputs("\n", stderr);
 
-    CallFrame *frame = &vm.frames[vm.frameCount - 1];
-    size_t instruction = frame->ip - frame->function->chunk.code - 1;
-    int line = frame->function->chunk.lines[instruction];
-    fprintf(stderr, "[line %d] in script\n", line);
+    for (int i = vm.frameCount - 1; i >= 0; i--)
+    {
+        CallFrame *frame = &vm.frames[i];
+        ObjFunction *function = frame->function;
+        // -1 because the IP is sitting on the next instruction to be
+        // executed.
+        size_t instruction = frame->ip - function->chunk.code - 1;
+        fprintf(stderr, "[line %d] in ", function->chunk.lines[instruction]);
+
+        if (function->name == NULL)
+        {
+            fprintf(stderr, "script\n");
+        }
+        else
+        {
+            fprintf(stderr, "%s()\n", function->name->chars);
+        }
+    }
+
     resetStack();
 }
 
@@ -285,10 +326,7 @@ InterpretResult interpret(const char *source)
     }
 
     push(OBJ_VAL(function));
-    CallFrame *frame = &vm.frames[vm.frameCount++];
-    frame->function = function;
-    frame->ip = function->chunk.code;
-    frame->slots = vm.stack;
+    callValue(OBJ_VAL(function), 0);
 
     return run();
 }
@@ -315,6 +353,46 @@ Value pop()
 static Value peek(int distance)
 {
     return vm.stackTop[-1 - distance];
+}
+
+static bool call(ObjFunction *function, int argCount)
+{
+    if (argCount != function->arity)
+    {
+        runtimeError("Expected %d arguments but got %d.", function->arity, argCount);
+        return false;
+    }
+
+    if (vm.frameCount == FRAMES_MAX)
+    {
+        runtimeError("Stack overflow.");
+        return false;
+    }
+
+    CallFrame *frame = &vm.frames[vm.frameCount++];
+    frame->function = function;
+    frame->ip = function->chunk.code;
+    frame->slots = vm.stackTop - argCount - 1; // -1 for the function itself (it is in this slot)
+
+    return true;
+}
+
+static bool callValue(Value callee, int argCount)
+{
+    if (IS_OBJ(callee))
+    {
+        switch (OBJ_TYPE(callee))
+        {
+        case OBJ_FUNCTION:
+            return call(AS_FUNCTION(callee), argCount);
+        default:
+            // Non-callable object type.
+            break;
+        }
+    }
+
+    runtimeError("Can only call functions and classes.");
+    return false;
 }
 
 static bool isFalsey(Value value)
