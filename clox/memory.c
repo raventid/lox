@@ -26,7 +26,7 @@ static void freeObject(Obj *object)
     {
     case OBJ_FUNCTION:
     {
-        ObjFunction *function = (ObjFunction*)object;
+        ObjFunction *function = (ObjFunction *)object;
         freeChunk(&function->chunk);
         FREE(ObjFunction, object);
         break;
@@ -36,6 +36,12 @@ static void freeObject(Obj *object)
         ObjString *string = (ObjString *)object;
         FREE_ARRAY(char, string->chars, string->length + 1);
         FREE(ObjString, object);
+        break;
+    }
+    case OBJ_NATIVE:
+    {
+        // Nothing to free for native functions
+        FREE(ObjNative, object);
         break;
     }
     }
